@@ -1,29 +1,25 @@
 import React from 'react';
-import {
-  TextInput,
-  FileInput,
-  NativeSelect,
-  Grid,
-} from "@mantine/core";
-import { INPUT_FIELD, FILE_INPUT_FIELD, STATIC_SELECT, Item } from "../helpers";
+import { TextInput, FileInput, NativeSelect, Grid, PasswordInput } from '@mantine/core';
+import { useFormContext } from 'react-hook-form';
+import { INPUT_FIELD, FILE_INPUT_FIELD, STATIC_SELECT, Item } from '../helpers';
 
 interface AddPropertyProps {
   item: Item;
-  onChange: (e: { [key: string]: any }) => void;
-  data: { [key: string]: any };  // Add the data prop type definition
 }
 
-const AddProperty: React.FC<AddPropertyProps> = ({ item, onChange, data }) => {
-  const handleTextInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange({ [item.name]: e.target.value });
-  };
+const AddProperty: React.FC<AddPropertyProps> = ({ item }) => {
+  const {
+    register,
+    formState: { errors },
+    setValue,
+    trigger,
+  } = useFormContext();
 
-  const handleFileInputChange = (file: File | null) => {
-    onChange({ [item.name]: file });
-  };
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onChange({ [item.name]: e.target.value });
+  const handleFileChange = (file: File | null) => {
+    if (file) {
+      setValue(item.name, file);
+      trigger(item.name);
+    }
   };
 
   switch (item.type) {
@@ -34,8 +30,34 @@ const AddProperty: React.FC<AddPropertyProps> = ({ item, onChange, data }) => {
             label={item.label}
             description={item.description}
             placeholder={item.placeholder}
-            value={data[item.name] || ''}
-            onChange={handleTextInputChange} 
+            {...register(item.name)}
+            error={errors[item.name]?.message}
+          />
+        </Grid.Col>
+      );
+
+    case 'email':
+      return (
+        <Grid.Col span={item.gridSpan}>
+          <TextInput
+            label={item.label}
+            description={item.description}
+            placeholder={item.placeholder}
+            {...register(item.name)}
+            error={errors[item.name]?.message}
+          />
+        </Grid.Col>
+      );
+
+    case 'password':
+      return (
+        <Grid.Col span={item.gridSpan}>
+          <PasswordInput
+            label={item.label}
+            description={item.description}
+            placeholder={item.placeholder}
+            {...register(item.name)}
+            error={errors[item.name]?.message}
           />
         </Grid.Col>
       );
@@ -46,9 +68,9 @@ const AddProperty: React.FC<AddPropertyProps> = ({ item, onChange, data }) => {
           <FileInput
             label={item.label}
             description={item.description}
-            placeholder={item.placeholder}
-            value={data[item.name] || undefined}
-            onChange={handleFileInputChange}
+            onChange={handleFileChange}
+            error={errors[item.name]?.message}
+            accept="image/jpeg, image/png, application/pdf"
           />
         </Grid.Col>
       );
@@ -57,11 +79,11 @@ const AddProperty: React.FC<AddPropertyProps> = ({ item, onChange, data }) => {
       return (
         <Grid.Col span={item.gridSpan}>
           <NativeSelect
-            value={data[item.name] || ''}  
-            onChange={handleSelectChange} 
-            data={item.options || []} 
+            data={item.options || []}
             label={item.label}
             description={item.description}
+            {...register(item.name)}
+            error={errors[item.name]?.message}
           />
         </Grid.Col>
       );
