@@ -1,4 +1,6 @@
 import { Item } from '../helpers';
+
+
 export const inputItems: Item[] = [
   {
     type: 'inputField',
@@ -9,7 +11,7 @@ export const inputItems: Item[] = [
     gridSpan: 4,
   },
   {
-    type: 'email', 
+    type: 'email',
     name: 'email',
     label: 'Email',
     description: 'Your email address',
@@ -17,7 +19,7 @@ export const inputItems: Item[] = [
     gridSpan: 4,
   },
   {
-    type: 'password', 
+    type: 'password',
     name: 'password',
     label: 'Password',
     description: 'Your password',
@@ -41,6 +43,50 @@ export const inputItems: Item[] = [
   },
 ];
 
+// Additional form fields
+export const inputItems1: Item[] = [
+  {
+    type: 'inputField',
+    name: 'username', 
+    label: 'Username',
+    description: 'Your username',
+    placeholder: 'Enter your username',
+    gridSpan: 4,
+  },
+  {
+    type: 'email',
+    name: 'workEmail', 
+    label: 'Work Email',
+    description: 'Your work email address',
+    placeholder: 'Enter your work email',
+    gridSpan: 4,
+  },
+  {
+    type: 'password',
+    name: 'confirmPassword',
+    label: 'Confirm Password',
+    description: 'Re-enter your password',
+    placeholder: 'Confirm your password',
+    gridSpan: 4,
+  },
+  {
+    type: 'fileInputField',
+    name: 'resume', 
+    label: 'Resume',
+    description: 'Upload your resume',
+    gridSpan: 4,
+  },
+  {
+    type: 'staticSelect',
+    name: 'experienceLevel',
+    label: 'Experience Level',
+    description: 'Select your level of experience',
+    options: ['Beginner', 'Intermediate', 'Expert'],
+    gridSpan: 4,
+  },
+];
+
+
 export const addDynamicField = (field: Item, items: Item[]): Item[] => {
-    return [...items, field];
-  };
+  return [...items, field];
+};
